@@ -1,23 +1,20 @@
 # ADR-0001: Repository and Application Architecture
 
-**Status:** Proposed
+**Status:** Accepted
 
 ## 1. Context
 
 **What are we building?**
-We are building a vulnerability detection and triage platform that integrates multiple security scanners and uses AI agents to perform evidence-grounded triage and suggest remediation steps. Instead of claiming to definitively prove exploitability, the platform categorizes findings into four evidence-based outcomes:
+We are building a vulnerability detection and triage platform that integrates multiple security scanners and uses AI agents to perform evidence-grounded triage and suggest remediation steps. Rather than claiming to conclusively prove exploitability, the platform produces assessments based on available evidence and explicitly acknowledges uncertainty by categorizing findings into four outcomes:
 * **Supported finding:** Available evidence supports the vulnerability.
 * **Likely false positive:** Evidence suggests the alert is not applicable.
 * **Insufficient evidence:** More runtime or application context is needed.
-* **Dynamically verified:** Authorized runtime testing produced confirming evidence.
+* **Dynamically verified *(Future capability — DAST is outside V1 scope)*:** Authorized runtime testing produced confirming evidence.
 
-We are building the system in two parts: an intentionally vulnerable shop application to benchmark detection accuracy, and a standalone security platform that orchestrates scanners and AI triage. Both live in a single Git monorepo for ease of demonstration as a learning proof of concept, though they run as separate applications.
+We are building the system in two parts: an intentionally vulnerable shop application to benchmark detection quality, and a standalone security platform that orchestrates scanners and AI triage. Both live in a single Git monorepo for ease of demonstration as a learning proof of concept, though they run as separate applications.
 
 **Why do we need both a vulnerable application and an AI security platform?**
-Because scanning arbitrary public-facing targets without explicit permission is off-limits, we need a controlled local lab target. The vulnerable shop provides known security issues and non-exploitable alerts so we can evaluate whether our AI triage accurately distinguishes supported findings from likely false positives.
-
-**What problems are we trying to avoid?**
-We want loose coupling and clear module boundaries so adding new scanners or triage logic does not require rewriting existing core features. Each scanner produces its own output format; rather than forcing our database schema to mirror an external standard like SARIF, we need an internal domain model tailored to our platform's workflows (such as correlation, AI evidence, and scan status), while deferring final normalization details to a future ADR.
+Because scanning arbitrary public-facing targets without explicit permission is off-limits, we need a controlled local lab target. The vulnerable shop provides known security issues and non-exploitable alerts so we can evaluate how well our AI triage reasons over available evidence and handles uncertainty.
 
 ## 2. Decision
 
