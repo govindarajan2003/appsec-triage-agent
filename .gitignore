@@ -1,20 +1,19 @@
 # Python
 __pycache__/
-*.pyc
-.pytest_cache/
+*.py[cod]
 .venv/
+.pytest_cache/
+.ruff_cache/
 .coverage
+htmlcov/
 
-# Environment/secrets
+# Secrets
 .env
 .env.*
 !.env.example
+*.pem
+*.key
 
-# Editors
-.vscode/
-.idea/
-
-# Build files
-build/
-dist/
-*.egg-info/
+# Local artifacts
+*.log
+.DS_Store
