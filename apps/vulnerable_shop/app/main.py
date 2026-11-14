@@ -1,7 +1,10 @@
 from fastapi import FastAPI
+from app.api.routes import health
 
-app = FastAPI(title="Vulnerable Shopping Application")
+def create_app() -> FastAPI:
+    app = FastAPI(title="Vulnerable Shopping Application")
+    app.include_router(health.router)
+    return app
 
-@app.get("/health")
-def health():
-    return {"status":"ok"}
+app = create_app()
+
