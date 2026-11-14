@@ -9,3 +9,13 @@ def test_health_returns_ok():
 
     assert response.status_code == 200
     assert response.json() == {"status":"ok"}
+
+def test_unknown_route_returns_404():
+    response = client.get("/healthy")
+
+    assert response.status_code == 404
+
+def test_wrong_method_returns_405():
+    response = client.post("/health")
+
+    assert response.status_code == 405
